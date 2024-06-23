@@ -38,11 +38,18 @@ fn check_connection() -> Option<String> {
         } else if stdout.contains("wifi:connected") {
             let output = Command::new("sh")
                 .arg("-c")
-                .arg("iwgetid -r")
+                .arg("iw dev | grep ssid") // Using iw to get the SSID
                 .output()
                 .expect("Failed to fetch SSID");
 
             if output.status.success() {
+                let ssid_output = String::from_utf8_lossy(&output.stdout);
+                let ssid_columns: Vec<&str> = ssid_output.split_whitespace().collect();
+                if ssid_columns.len() > 1 {
+                    let ssid_value = ssid_columns[1..].join(" ");
+                    return Some(ssid_value);
+                }
+
                 return Some(String::from_utf8_lossy(&output.stdout).to_string());
             }
             
@@ -71,10 +78,9 @@ fn check_nordvpn() -> Option<String> {
             .expect("Failed nordvpn check");
 
         if output.status.success() {
-            return Some("".to_string());
+            return Some("".to_string());
         }
     }
 
     None
 }
-
