@@ -8,7 +8,7 @@ fn main() {
     }
 
     if let Some(nordvpn_status) = check_nordvpn() {
-        output = format!("{} {}{}", output, "%{T2}", nordvpn_status);
+        output = format!("{} {}", output, nordvpn_status);
     }
  
     print!("{}", output);       
@@ -78,7 +78,7 @@ fn check_nordvpn() -> Option<String> {
             .expect("Failed nordvpn check");
 
         if output.status.success() {
-            return Some("".to_string());
+            return Some("".to_string());
         }
     }
 
