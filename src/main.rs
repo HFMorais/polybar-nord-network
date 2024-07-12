@@ -59,7 +59,7 @@ fn check_connection() -> Option<String> {
         return Some("offline".to_string());
     }
 
-    None
+    return Some("offline".to_string());
 }
 
 fn check_nordvpn() -> Option<String> {
